@@ -98,7 +98,7 @@ print("Model(Min Leaf Node) Accuracy: " + str(model_score_min_leaf))
 # Step 5.4 : Run Model (Depth=5, Min Leaf Nodes = 100)
 model_final = DecisionTreeClassifier(max_depth=5, min_samples_leaf=100, class_weight="balanced", random_state=42)
 model_final.fit(features_train,target_train)
-model_score_final = model_min_leaf.score(features_test,target_test)*100
+model_score_final = model_final.score(features_test,target_test)*100
 print("Model (Depth=5, Min Leaf Nodes = 100) Accuracy: " + str(model_score_final))
 
 # Step 6.1   : Evaluate Modal : Accuracy Metrics Precision   
@@ -138,7 +138,7 @@ graph.write_pdf("output/DecisionTreeGraph.pdf")
 input_data = pd.read_csv("Data/input.csv")
 #print(input_data)
 output = "Stay"
-if (model.predict(input_data) == 1):
+if (model_final.predict(input_data) == 1):
         output = "Leave"
 
 print("This Employee is going to " + output)
