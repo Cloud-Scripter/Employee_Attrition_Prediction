@@ -118,7 +118,7 @@ print("ROC/AUC score: " + str(rocaocscore))
 
 
 
-#Step 6 :  Export Graph     
+#Step 6.1 :  Export Graph     
 feature_names = list(features_train)
 target_names = list(target_train.unique())
 target_names = ['0','1']
@@ -134,11 +134,12 @@ dot_data = export_graphviz(model_final,out_file=None,
 graph = pydotplus.graph_from_dot_data(dot_data)
 graph.write_pdf("output/DecisionTreeGraph.pdf")
 
+
 # Now it's time to Predict
 input_data = pd.read_csv("Data/input.csv")
 #print(input_data)
 output = "Stay"
-if (model_final.predict(input_data) == 1):
+if (model.predict(input_data) == 1):
         output = "Leave"
 
 print("This Employee is going to " + output)

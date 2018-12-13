@@ -88,10 +88,10 @@ def AttritionPredictor(satisfaction,
 
 
         # #Step 5.1 : Run Model (No Depth)
-        # model = DecisionTreeClassifier(random_state=42)
-        # model.fit(features_train,target_train)
-        # model_score_nodepth = model.score(features_test,target_test)*100
-        # print("Model(No Depth) Accuracy: " + str(model_score_nodepth))
+        model = DecisionTreeClassifier(random_state=42)
+        model.fit(features_train,target_train)
+        model_score_nodepth = model.score(features_test,target_test)*100
+        print("Model(No Depth) Accuracy: " + str(model_score_nodepth))
 
         # #Step 5.2 : Run Model (Max Depth = 5)
         # model_depth_5 = DecisionTreeClassifier(max_depth=5, random_state=42)
@@ -106,13 +106,13 @@ def AttritionPredictor(satisfaction,
         # print("Model(Min Leaf Node) Accuracy: " + str(model_score_min_leaf))
 
         # Step 5.4 : Run Model (Depth=5, Min Leaf Nodes = 100)
-        model_final = DecisionTreeClassifier(max_depth=5, min_samples_leaf=100, class_weight="balanced", random_state=42)
-        model_final.fit(features_train,target_train)
-        model_score_final = model_final.score(features_test,target_test)*100
-        print("Model (Depth=5, Min Leaf Nodes = 100) Accuracy: " + str(model_score_final))
+        # model_final = DecisionTreeClassifier(max_depth=5, min_samples_leaf=100, class_weight="balanced", random_state=42)
+        # model_final.fit(features_train,target_train)
+        # model_score_final = model_final.score(features_test,target_test)*100
+        # print("Model (Depth=5, Min Leaf Nodes = 100) Accuracy: " + str(model_score_final))
 
         # Step 6.1   : Evaluate Modal : Accuracy Metrics Precision   
-        prediction = model_final.predict(features_test)
+        prediction = model.predict(features_test)
         predictionscore = precision_score(target_test,prediction)
         print("Accuracy Metrics Precision: " + str(predictionscore))
 
@@ -133,7 +133,7 @@ def AttritionPredictor(satisfaction,
         #print(feature_names)
         #print(target_names)
 
-        dot_data = export_graphviz(model_final,out_file=None,
+        dot_data = export_graphviz(model,out_file=None,
                         feature_names=feature_names,
                         class_names=target_names,
                         filled=True, rounded=True,
@@ -153,14 +153,15 @@ def AttritionPredictor(satisfaction,
         input_data['work_accident'] = work_accident
         input_data['promotion'] = promotion
         input_data['salary'] = salary
+        input_data['IT'] = 1
 
-        print(input_data.info())
-        print(input_data.head())
+        #print(input_data.info())
+        print(input_data)
         output = "Stay"
-        if (model_final.predict(input_data) == 1):
+        if (model.predict(input_data) > 0):
                 output = "Leave"
 
-        print("..This Employee is going to " + output)
+        print("This Employee is going to " + output)
 
         return(output)
 
